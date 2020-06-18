@@ -12,6 +12,7 @@ namespace ContactService.Models
         public ContactName Name { get; set; }
         public List<ContactPhone> Phone { get; set; }
         public string Email { get; set; }
+        public ContactAddress Address { get; set; }
     }
 
     public class ContactName

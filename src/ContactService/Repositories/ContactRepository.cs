@@ -14,48 +14,31 @@ namespace ContactService.Repositories
         #region Members
         public async Task<Contact> Find(int Id)
         {
-            Contact result = null;
-            using (var db = new LiteDatabase(ContactsLiteDB))
-            {
-                var contacts = Contacts(db);
-                result = contacts.Find(c => c.Id == Id).FirstOrDefault();
-            }
-
-            return await Task.FromResult(result);
+            using var db = new LiteDatabase(ContactsLiteDB);
+            var contacts = Contacts(db);
+            return await Task.FromResult(contacts.Find(c => c.Id == Id).FirstOrDefault());
         }
 
         public async Task<IEnumerable<Contact>> List()
         {
-            IEnumerable<Contact> result;
-            using (var db = new LiteDatabase(ContactsLiteDB))
-            {
-                var contacts = Contacts(db);
-                result = contacts.FindAll().ToList();
-            }
-
-            return await Task.FromResult(result);
+            using var db = new LiteDatabase(ContactsLiteDB);
+            var contacts = Contacts(db);
+            return await Task.FromResult(contacts.FindAll().ToList());
         }
 
         public async Task<int> Insert(Contact contact)
         {
-            using (var db = new LiteDatabase(ContactsLiteDB))
-            {
-                var contacts = Contacts(db);
-                contacts.Insert(contact);
-                return await Task.FromResult(contact.Id);
-            }
+            using var db = new LiteDatabase(ContactsLiteDB);
+            var contacts = Contacts(db);
+            contacts.Insert(contact);
+            return await Task.FromResult(contact.Id);
         }
 
         public async Task<bool> Delete(int Id)
         {
-            bool result = false;
-            using (var db = new LiteDatabase(ContactsLiteDB))
-            {
-                var contacts = Contacts(db);
-                result = contacts.Delete(Id);
-            }
-
-            return await Task.FromResult(result);
+            using var db = new LiteDatabase(ContactsLiteDB);
+            var contacts = Contacts(db);
+            return await Task.FromResult(contacts.Delete(Id));
         }
 
         public async Task<bool> Update(int Id, Contact contact)
@@ -66,6 +49,7 @@ namespace ContactService.Repositories
                 update.Name = contact.Name;
                 update.Phone = contact.Phone;
                 update.Email = contact.Email;
+                update.Address = contact.Address;
                 return await Task.FromResult(UpdateContact(update));
             }
             else
@@ -76,11 +60,9 @@ namespace ContactService.Repositories
 
         private bool UpdateContact(Contact contact)
         {
-            using (var db = new LiteDatabase(ContactsLiteDB))
-            {
-                var contacts = Contacts(db);
-                return contacts.Update(contact);
-            }
+            using var db = new LiteDatabase(ContactsLiteDB);
+            var contacts = Contacts(db);
+            return contacts.Update(contact);
         }
 
         private ILiteCollection<Contact> Contacts(LiteDatabase db)
