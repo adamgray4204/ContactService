@@ -26,10 +26,11 @@ namespace ContactService.Repositories
             return await Task.FromResult(contacts.FindAll().ToList());
         }
 
-        public async Task<int> Insert(Contact contact)
+        public async Task<int> Insert(ContactPutPost contactPutPost)
         {
             using var db = new LiteDatabase(ContactsLiteDB);
             var contacts = Contacts(db);
+            var contact = contactPutPost.Contact;
             contacts.Insert(contact);
             return await Task.FromResult(contact.Id);
         }
@@ -41,21 +42,11 @@ namespace ContactService.Repositories
             return await Task.FromResult(contacts.Delete(Id));
         }
 
-        public async Task<bool> Update(int Id, Contact contact)
+        public async Task<bool> Update(int Id, ContactPutPost contactPutPost)
         {
-            var update = await Find(Id);
-            if (update != null)
-            {
-                update.Name = contact.Name;
-                update.Phone = contact.Phone;
-                update.Email = contact.Email;
-                update.Address = contact.Address;
-                return await Task.FromResult(UpdateContact(update));
-            }
-            else
-            {
-                return await Task.FromResult(false);
-            }
+            var contact = contactPutPost.Contact;
+            contact.Id = Id;
+            return await Task.FromResult(UpdateContact(contact));
         }
 
         private bool UpdateContact(Contact contact)

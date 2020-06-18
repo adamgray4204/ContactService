@@ -63,7 +63,7 @@ namespace ContactService.Controllers
         /// <param name="contact">Contact to create</param>
         /// <returns>Id of new contact entity</returns>
         [HttpPost]
-        public async Task<IActionResult> Post(Contact contact)
+        public async Task<IActionResult> Post(ContactPutPost contact)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace ContactService.Controllers
         /// <param name="contact">Contact values to update entity with</param>
         /// <returns>Ok if successful or badrequest if exception occurs</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Contact contact)
+        public async Task<IActionResult> Put(int id, ContactPutPost contact)
         {
             try
             {

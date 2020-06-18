@@ -6,6 +6,22 @@ using System.Threading.Tasks;
 
 namespace ContactService.Models
 {
+    public class ContactPutPost
+    {
+        public ContactName Name { get; set; }
+        public List<ContactPhone> Phone { get; set; }
+        public string Email { get; set; }
+        public ContactAddress Address { get; set; }
+
+        public Contact Contact
+        {
+            get
+            {
+                return new Contact() { Address = Address, Email = Email, Name = Name, Phone = Phone };
+            }
+        }
+    }
+
     public class Contact
     {
         public int Id { get; set; }
